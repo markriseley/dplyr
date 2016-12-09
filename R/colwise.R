@@ -121,7 +121,9 @@ probe_colwise_names <- function(tbl, p, ...) {
   }
 
   vars <- tbl_vars(tbl)
-  vars[selected]
+  vs <- vars[selected]
+  if(is.character(vs)) vs <- lapply(vs, as.name)
+  vs
 }
 
 #' @rdname summarise_all
@@ -184,6 +186,8 @@ select_colwise_names <- function(tbl, cols) {
     stop(".cols should be a character/numeric vector or a columns object",
       call. = FALSE)
   }
+
+  if(is.character(selected)) selected <- lapply(selected, as.name)
 
   selected
 }

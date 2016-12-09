@@ -61,6 +61,19 @@ test_that("can probe colwise", {
   expect_classes(logical, "cnccf")
 })
 
+test_that("*_at funs handle illegal column names", {
+  df <- data_frame(`x 1` = 1:3)
+  exp1 <- df %>% summarise_at("x 1", sum)
+  expect_equal(6, rowSums(exp1))
+})
+
+test_that("*_if funs handle illegal column names", {
+  df <- data_frame(`x 1` = 1:3)
+  exp1 <- df %>% summarise_if(is.numeric, sum)
+  expect_equal(6, rowSums(exp1))
+})
+
+
 test_that("sql sources fail with bare functions", {
   expect_error(memdb_frame(x = 1) %>% mutate_all(mean) %>% collect())
 })
